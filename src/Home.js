@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Fire from './config/fire'
+import Game from './Game'
 
 class Home extends Component {
   logOut() {
@@ -9,7 +10,7 @@ class Home extends Component {
   render() {
     return (
       <div>
-        Success Login
+        SUCCESS LOGIN
         <button onClick={this.logOut}>Log Out</button>
       </div>
     );

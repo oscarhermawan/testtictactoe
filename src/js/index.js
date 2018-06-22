@@ -43,6 +43,8 @@ $('#game li').click(function(){
   {
     alert('Already selected')
   }
+
+  
   else if (count%2 == 0)
   {
 	  count++
@@ -53,10 +55,10 @@ $('#game li').click(function(){
 	   alert('O wins')
 	   count = 0
 	   o_win++
-$('#o_win').text(o_win)
+     $('#o_win').text(o_win)
         }
   }
-   else {
+  else {
 	  count++
     $(this).text(x)
     $(this).addClass('disable x btn-info')
@@ -65,23 +67,17 @@ $('#o_win').text(o_win)
         	 alert('X wins')
         	 count = 0
         	 x_win++
-        	 // $('#x_win').text(x_win)
-        	 // $("#game li").removeClass('disable')
-        	 // $("#game li").removeClass('o')
-        	 // $("#game li").removeClass('x')
-        	 // $("#game li").removeClass('btn-primary')
-        	 // $("#game li").removeClass('btn-info')
       }
   }
 
    });
     $("#reset").click(function () {
     $("#game li").text("+");
-	$("#game li").removeClass('disable')
-	$("#game li").removeClass('o')
-	$("#game li").removeClass('x')
-	$("#game li").removeClass('btn-primary')
-	$("#game li").removeClass('btn-info')
+  	$("#game li").removeClass('disable')
+  	$("#game li").removeClass('o')
+  	$("#game li").removeClass('x')
+  	$("#game li").removeClass('btn-primary')
+  	$("#game li").removeClass('btn-info')
 	count = 0
 
   });

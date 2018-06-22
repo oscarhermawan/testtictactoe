@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Fire from './config/fire'
+
+import Game from './Game'
 import Login from './Login'
 import Home from './Home'
 
@@ -31,7 +33,7 @@ class App extends Component {
   render() {
     return (
      <div>
-      {this.state.user ? (<Home/>) : (<Login />)}
+      {this.state.user ? (<Game/>) : (<Login />)}
      </div>
    )
   }

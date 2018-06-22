@@ -1,8 +1,74 @@
 import React, { Component } from 'react';
+import Fire from './config/fire'
 import './App.css';
-import './js/index.js'
+import './js/index'
 
 class Game extends Component {
+  constructor() {
+    super();
+    this.state = {
+      countPerClick : 0,
+      posisiKlik:["+","+","+","+","+",
+                  "+","+","+","+",],
+      warnaKlik : ["btn span1","btn span1","btn span1","btn span1","btn span1",
+                  "btn span1","btn span1","btn span1","btn span1"]
+    }
+  }
+
+  logOut() {
+        Fire.auth().signOut();
+    }
+
+  cekkWinCondition(){
+    var winCondition = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
+  }
+
+  cekAlreadyClick(indeks){
+    if(this.state.posisiKlik[indeks] === "X" || this.state.posisiKlik[indeks] === "O")
+      return true
+    else
+      return false
+  }
+
+  klikGame(indeks){
+    var tmpWarna = this.state.warnaKlik
+
+    if(this.cekAlreadyClick(indeks) === true){
+      alert("Already Selected")
+    }
+    else {
+      if(this.state.countPerClick%2 == 0){
+        // Giliran O
+        var tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
+            if(i == indeks){
+              return "O"
+            } return posisi
+          }
+        )
+        tmpWarna[indeks] = "btn span1 disable o btn-primary"
+      } else {
+        // Giliran X
+        var tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
+            if(i == indeks){
+              return "X"
+            } return posisi
+          }
+        )
+        tmpWarna[indeks] = "btn span1 disable x btn-info"
+      }
+
+      this.setState({warnaKlik:tmpWarna})
+      this.setState({posisiKlik:tmpPosisiKlik})
+      this.setState({countPerClick:this.state.countPerClick+1})
+    }
+
+
+
+
+
+
+  }
+
   render() {
     return (
         <div id="tic-tac-toe">
@@ -21,19 +87,16 @@ class Game extends Component {
             </div>
 
             <ul className="row" id="game">
-              <li id="one" className="btn span1" >+</li>
-              <li id="two" className="btn span1">+</li>
-              <li id="three" className="btn span1">+</li>
-              <li id="four" className="btn span1">+</li>
-              <li id="five" className="btn span1">+</li>
-              <li id="six" className="btn span1">+</li>
-              <li id="seven" className="btn span1">+</li>
-              <li id="eight" className="btn span1">+</li>
-              <li id="nine" className="btn span1">+</li>
+              {
+                this.state.posisiKlik.map((posisi, i)=>
+                  <li className={this.state.warnaKlik[i]} onClick={() => this.klikGame(i)}>{this.state.posisiKlik[i]}</li>
+                )
+              }
             </ul>
             <div className="clr">&nbsp;</div>
             <div className="row"><a href="#" id="reset" className="btn-success btn span3" >Restart</a></div>
           </div>
+            <button onClick={this.logOut}>Log Out</button>
         </div>
     );
   }

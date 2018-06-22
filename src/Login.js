@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Game2 from './Game2'
 import fire from './config/fire';
 
 class Login extends Component {
@@ -29,19 +30,19 @@ class Login extends Component {
   render() {
     return (
        <div className="col-md-6">
-       <form>
-      <div className="form-group">
-       <label for="exampleInputEmail1">Email address</label>
-       <input value={this.state.email} onChange={this.handleChange} type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+        <form>
+          <div className="form-group">
+          <label for="exampleInputEmail1">Email address</label>
+          <input value={this.state.email} onChange={this.handleChange} type="email" name="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+          </div>
+          <div className="form-group">
+          <label for="exampleInputPassword1">Password</label>
+          <input value={this.state.password} onChange={this.handleChange} type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+          </div>
+          <button type="submit" onClick={this.login} className="btn btn-primary">Login</button>
+        </form>
+        <Game2/>
       </div>
-       <div className="form-group">
-      <label for="exampleInputPassword1">Password</label>
-      <input value={this.state.password} onChange={this.handleChange} type="password" name="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
-      </div>
-      <button type="submit" onClick={this.login} className="btn btn-primary">Login</button>
- </form>
-
- </div>
     );
   }
 }
