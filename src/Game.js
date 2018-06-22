@@ -17,7 +17,15 @@ class Game extends Component {
 
   logOut() {
         Fire.auth().signOut();
-    }
+  }
+
+  cekTieCondition(){
+    var tmp = this.state.posisiKlik.filter(posisi => posisi === "+")
+    if(tmp.length>0)
+      return false
+    else
+      return true
+  }
 
   cekkWinCondition(){
     var winCondition = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
@@ -33,7 +41,10 @@ class Game extends Component {
   klikGame(indeks){
     var tmpWarna = this.state.warnaKlik
 
-    if(this.cekAlreadyClick(indeks) === true){
+    if(this.cekTieCondition() === true){
+      alert("It's Tie")
+    }
+    else if(this.cekAlreadyClick(indeks) === true){
       alert("Already Selected")
     }
     else {
@@ -56,17 +67,10 @@ class Game extends Component {
         )
         tmpWarna[indeks] = "btn span1 disable x btn-info"
       }
-
       this.setState({warnaKlik:tmpWarna})
       this.setState({posisiKlik:tmpPosisiKlik})
       this.setState({countPerClick:this.state.countPerClick+1})
     }
-
-
-
-
-
-
   }
 
   render() {
