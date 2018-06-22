@@ -7,6 +7,7 @@ class Game extends Component {
   constructor() {
     super();
     this.state = {
+      hasWinner : [false, "+"],
       countPerClick : 0,
       posisiKlik:["+","+","+","+","+",
                   "+","+","+","+",],
@@ -31,14 +32,12 @@ class Game extends Component {
     var nilaiWinCondition = false
     var tmp = this.state.posisiKlik
     tmp[indeks] = valueposisi
-
     var winCondition = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
     winCondition.map((value)=>{
       if(this.state.posisiKlik[value[0]] === valueposisi && this.state.posisiKlik[value[1]] === valueposisi && this.state.posisiKlik[value[2]] === valueposisi){
         nilaiWinCondition = true
       }
     })
-
     return nilaiWinCondition;
   }
 
@@ -51,15 +50,13 @@ class Game extends Component {
 
   klikGame(indeks){
     var tmpWarna = this.state.warnaKlik
-
-    if(this.cekTieCondition() === true){
+    if(this.state.hasWinner[0] === true){
+      alert(`${this.state.hasWinner[1]} Win, Start a new game`)
+    } else if(this.cekTieCondition() === true){
       alert("It's Tie")
-    }
-
-    else if(this.cekAlreadyClick(indeks) === true){
+    } else if(this.cekAlreadyClick(indeks) === true){
       alert("Already Selected")
-    }
-    else {
+    } else {
       if(this.state.countPerClick%2 == 0){
         // Giliran O
         var tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
@@ -70,6 +67,7 @@ class Game extends Component {
         )
         tmpWarna[indeks] = "btn span1 disable o btn-primary"
         if(this.cekkWinCondition(indeks, "O") === true){
+          this.setState({hasWinner:[true, "O"]})
           alert("O Win")
         }
       } else {
@@ -82,6 +80,7 @@ class Game extends Component {
         )
         tmpWarna[indeks] = "btn span1 disable x btn-info"
         if(this.cekkWinCondition(indeks, "X") === true){
+          this.setState({hasWinner:[true, "X"]})
           alert("X Win")
         }
       }
@@ -116,9 +115,9 @@ class Game extends Component {
               }
             </ul>
             <div className="clr">&nbsp;</div>
-            <div className="row"><a href="#" id="reset" className="btn-success btn span3" >Restart</a></div>
+            <div className="row"><a href="#" id="reset" className="btn-success btn span3" >Restart</a></div> <br/>
+            <div className="row"><button className="btn-danger btn span3" onClick={this.logOut}>Log Out</button></div>
           </div>
-            <button onClick={this.logOut}>Log Out</button>
         </div>
     );
   }
