@@ -27,8 +27,19 @@ class Game extends Component {
       return true
   }
 
-  cekkWinCondition(){
+  cekkWinCondition(indeks, valueposisi){
+    var nilaiWinCondition = false
+    var tmp = this.state.posisiKlik
+    tmp[indeks] = valueposisi
+
     var winCondition = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]]
+    winCondition.map((value)=>{
+      if(this.state.posisiKlik[value[0]] === valueposisi && this.state.posisiKlik[value[1]] === valueposisi && this.state.posisiKlik[value[2]] === valueposisi){
+        nilaiWinCondition = true
+      }
+    })
+
+    return nilaiWinCondition;
   }
 
   cekAlreadyClick(indeks){
@@ -44,6 +55,7 @@ class Game extends Component {
     if(this.cekTieCondition() === true){
       alert("It's Tie")
     }
+
     else if(this.cekAlreadyClick(indeks) === true){
       alert("Already Selected")
     }
@@ -57,6 +69,9 @@ class Game extends Component {
           }
         )
         tmpWarna[indeks] = "btn span1 disable o btn-primary"
+        if(this.cekkWinCondition(indeks, "O") === true){
+          alert("O Win")
+        }
       } else {
         // Giliran X
         var tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
@@ -66,6 +81,9 @@ class Game extends Component {
           }
         )
         tmpWarna[indeks] = "btn span1 disable x btn-info"
+        if(this.cekkWinCondition(indeks, "X") === true){
+          alert("X Win")
+        }
       }
       this.setState({warnaKlik:tmpWarna})
       this.setState({posisiKlik:tmpPosisiKlik})
