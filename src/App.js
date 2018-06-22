@@ -1,27 +1,40 @@
 import React, { Component } from 'react';
-import Game from './Game.js'
+import Fire from './config/fire'
+import Login from './Login'
+import Home from './Home'
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = ({
+      user: null,
+    });
+    this.authListener = this.authListener.bind(this);
+  }
+
+  componentDidMount() {
+    this.authListener();
+  }
+
+  authListener() {
+    Fire.auth().onAuthStateChanged((user) => {
+      console.log(user);
+      if (user) {
+        this.setState({ user });
+        localStorage.setItem('user', user.uid);
+      } else {
+        this.setState({ user: null });
+        localStorage.removeItem('user');
+      }
+    });
+  }
   render() {
     return (
-      <div>
-      <form>
-        <div class="form-group">
-          <label for="exampleInputEmail1">Email address</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-          
-        </div>
-        <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"/>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
-
-        <Game></Game>
-      </div>
-    );
+     <div>
+      {this.state.user ? (<Home/>) : (<Login />)}
+     </div>
+   )
   }
 }
 
-export default App;
+ export default App;
