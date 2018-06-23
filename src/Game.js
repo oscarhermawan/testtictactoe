@@ -12,13 +12,21 @@ class Game extends Component {
       hasWinner : [false, "+"],
       countPerClick : 0,
       posisiKlik:[],
-      warnaKlik : ["btn span1","btn span1","btn span1","btn span1","btn span1",
-                  "btn span1","btn span1","btn span1","btn span1"]
+      warnaKlik : []
     }
   }
 
   handleChange(data) {
     this.setState({posisiKlik: data.posisiKlik});
+    this.setState({warnaKlik: data.warnaKlik});
+  }
+
+  changeColorTableFirebase(warnaKlik){
+    ref.update({warnaKlik:warnaKlik})
+  }
+
+  changeOnFirebase(posisiDiklik){
+    ref.update({posisiKlik:posisiDiklik})
   }
 
   cekTieCondition(){
@@ -50,9 +58,9 @@ class Game extends Component {
   }
 
   restartGame(){
-    this.setState({posisiKlik:["+","+","+","+","+",
+    ref.update({posisiKlik:["+","+","+","+","+",
                 "+","+","+","+"]})
-    this.setState({warnaKlik:["btn span1","btn span1","btn span1","btn span1","btn span1",
+    ref.update({warnaKlik:["btn span1","btn span1","btn span1","btn span1","btn span1",
                 "btn span1","btn span1","btn span1","btn span1"]})
     this.setState({hasWinner:[false, "+"]})
     this.setState({countPerClick : 0})
@@ -100,14 +108,16 @@ class Game extends Component {
         }
       }
       this.setState({warnaKlik:tmpWarna})
+      this.changeColorTableFirebase(tmpWarna)
       this.setState({posisiKlik:tmpPosisiKlik})
+      this.changeOnFirebase(tmpPosisiKlik)
       this.setState({countPerClick:this.state.countPerClick+1})
     }
   }
 
   componentDidMount(){
     ref.on('value', snap => {
-      snap.val().posisiKlik ? this.handleChange(snap.val()) : console.log("belum ada")
+      snap.val() ? this.handleChange(snap.val()) : console.log("belum ada")
     })
   }
 
