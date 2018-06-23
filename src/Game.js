@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import Fire from './config/fire'
+import { Fire, ref } from './config/fire'
 import './App.css';
 
 class Game extends Component {
   constructor() {
     super();
     this.state = {
+      terisi:false,
       oWon:0,
       xWon : 0,
       hasWinner : [false, "+"],
       countPerClick : 0,
-      posisiKlik:["+","+","+","+","+",
-                  "+","+","+","+",],
+      posisiKlik:[],
       warnaKlik : ["btn span1","btn span1","btn span1","btn span1","btn span1",
                   "btn span1","btn span1","btn span1","btn span1"]
     }
   }
 
-  logOut() {
-        Fire.auth().signOut();
+  handleChange(data) {
+    this.setState({posisiKlik: data.posisiKlik});
   }
 
   cekTieCondition(){
@@ -103,6 +103,16 @@ class Game extends Component {
       this.setState({posisiKlik:tmpPosisiKlik})
       this.setState({countPerClick:this.state.countPerClick+1})
     }
+  }
+
+  componentDidMount(){
+    ref.on('value', snap => {
+      snap.val().posisiKlik ? this.handleChange(snap.val()) : console.log("belum ada")
+    })
+  }
+
+  logOut() {
+        Fire.auth().signOut();
   }
 
   render() {

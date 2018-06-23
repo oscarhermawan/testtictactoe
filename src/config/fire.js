@@ -8,6 +8,7 @@ const config = {
   storageBucket: "tictactoe-test-75354.appspot.com",
   messagingSenderId: "614288481419"
 };
-const fire = firebase.initializeApp(config);
+export const Fire = firebase.initializeApp(config);
 
-export default fire;
+// .child('posisiKlik')
+export const ref = firebase.database().ref()

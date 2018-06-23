@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Fire from './config/fire'
+import { Fire } from './config/fire'
 import Game from './Game'
 import Login from './Login'
 

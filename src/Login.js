@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import fire from './config/fire';
+import { Fire } from './config/fire'
 
 class Login extends Component {
   constructor(props) {
@@ -18,7 +18,7 @@ class Login extends Component {
 
   login(e) {
     e.preventDefault();
-    fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    Fire.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .then((u)=>{
 
       })
