@@ -7,6 +7,8 @@ class Game extends Component {
   constructor() {
     super();
     this.state = {
+      oWon:0,
+      xWon : 0,
       hasWinner : [false, "+"],
       countPerClick : 0,
       posisiKlik:["+","+","+","+","+",
@@ -48,11 +50,22 @@ class Game extends Component {
       return false
   }
 
+  restartGame(){
+    this.setState({posisiKlik:["+","+","+","+","+",
+                "+","+","+","+"]})
+    this.setState({warnaKlik:["btn span1","btn span1","btn span1","btn span1","btn span1",
+                "btn span1","btn span1","btn span1","btn span1"]})
+    this.setState({hasWinner:[false, "+"]})
+  }
+
   klikGame(indeks){
+    console.log("statenya ",this.state.posisiKlik);
     var tmpWarna = this.state.warnaKlik
     if(this.state.hasWinner[0] === true){
+      this.restartGame()
       alert(`${this.state.hasWinner[1]} Win, Start a new game`)
     } else if(this.cekTieCondition() === true){
+      this.restartGame()
       alert("It's Tie")
     } else if(this.cekAlreadyClick(indeks) === true){
       alert("Already Selected")
@@ -68,6 +81,7 @@ class Game extends Component {
         tmpWarna[indeks] = "btn span1 disable o btn-primary"
         if(this.cekkWinCondition(indeks, "O") === true){
           this.setState({hasWinner:[true, "O"]})
+          this.setState({oWon:this.state.oWon+1})
           alert("O Win")
         }
       } else {
@@ -81,6 +95,7 @@ class Game extends Component {
         tmpWarna[indeks] = "btn span1 disable x btn-info"
         if(this.cekkWinCondition(indeks, "X") === true){
           this.setState({hasWinner:[true, "X"]})
+          this.setState({xWon:this.state.xWon+1})
           alert("X Win")
         }
       }
@@ -98,11 +113,11 @@ class Game extends Component {
               <h1 className="span3">Tic Tac Toe</h1>
               <div className="span3">
                 <div className="input-prepend input-append">
-                <span className="add-on win_text">O won</span><strong id="o_win" className="win_times add-on">0</strong><span className="add-on">time(s)</span>
+                <span className="add-on win_text">O won</span><strong id="o_win" className="win_times add-on">{this.state.oWon}</strong><span className="add-on">time(s)</span>
                 </div>
 
                 <div className="input-prepend input-append">
-                <span className="add-on win_text">X won</span><strong id="x_win" className="win_times add-on">0</strong><span className="add-on">time(s)</span>
+                <span className="add-on win_text">X won</span><strong id="x_win" className="win_times add-on">{this.state.xWon}</strong><span className="add-on">time(s)</span>
                 </div>
               </div>
             </div>
@@ -115,7 +130,7 @@ class Game extends Component {
               }
             </ul>
             <div className="clr">&nbsp;</div>
-            <div className="row"><a href="#" id="reset" className="btn-success btn span3" >Restart</a></div> <br/>
+            <div className="row"><a href="#" id="reset" className="btn-success btn span3" onClick={() => this.restartGame()}>Restart</a></div> <br/>
             <div className="row"><button className="btn-danger btn span3" onClick={this.logOut}>Log Out</button></div>
           </div>
         </div>
