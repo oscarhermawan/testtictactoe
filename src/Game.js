@@ -37,7 +37,7 @@ class Game extends Component {
     winCondition.map((value)=>{
       if(this.state.posisiKlik[value[0]] === valueposisi && this.state.posisiKlik[value[1]] === valueposisi && this.state.posisiKlik[value[2]] === valueposisi){
         nilaiWinCondition = true
-      }
+      } return value
     })
     return nilaiWinCondition;
   }
@@ -55,11 +55,12 @@ class Game extends Component {
     this.setState({warnaKlik:["btn span1","btn span1","btn span1","btn span1","btn span1",
                 "btn span1","btn span1","btn span1","btn span1"]})
     this.setState({hasWinner:[false, "+"]})
+    this.setState({countPerClick : 0})
   }
 
   klikGame(indeks){
-    console.log("statenya ",this.state.posisiKlik);
     var tmpWarna = this.state.warnaKlik
+    var tmpPosisiKlik
     if(this.state.hasWinner[0] === true){
       this.restartGame()
       alert(`${this.state.hasWinner[1]} Win, Start a new game`)
@@ -69,10 +70,10 @@ class Game extends Component {
     } else if(this.cekAlreadyClick(indeks) === true){
       alert("Already Selected")
     } else {
-      if(this.state.countPerClick%2 == 0){
+      if(this.state.countPerClick%2 === 0){
         // Giliran O
-        var tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
-            if(i == indeks){
+        tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
+            if(i === indeks){
               return "O"
             } return posisi
           }
@@ -85,8 +86,8 @@ class Game extends Component {
         }
       } else {
         // Giliran X
-        var tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
-            if(i == indeks){
+        tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
+            if(i === indeks){
               return "X"
             } return posisi
           }
@@ -129,7 +130,7 @@ class Game extends Component {
               }
             </ul>
             <div className="clr">&nbsp;</div>
-            <div className="row"><a href="#" id="reset" className="btn-success btn span3" onClick={() => this.restartGame()}>Restart</a></div> <br/>
+            <div className="row"><a id="reset" className="btn-success btn span3" onClick={() => this.restartGame()}>Restart</a></div> <br/>
             <div className="row"><button className="btn-danger btn span3" onClick={this.logOut}>Log Out</button></div>
           </div>
         </div>
