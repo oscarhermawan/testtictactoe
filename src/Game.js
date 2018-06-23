@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Fire from './config/fire'
 import './App.css';
-import './js/index'
 
 class Game extends Component {
   constructor() {

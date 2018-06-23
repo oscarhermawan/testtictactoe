@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Game2 from './Game2'
 import fire from './config/fire';
 
 class Login extends Component {
@@ -41,7 +40,6 @@ class Login extends Component {
           </div>
           <button type="submit" onClick={this.login} className="btn btn-primary">Login</button>
         </form>
-        <Game2/>
       </div>
     );
   }
