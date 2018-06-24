@@ -62,12 +62,38 @@ class Game extends Component {
   }
 
   restartGame(){
-    ref.update({posisiKlik:["+","+","+","+","+",
-                "+","+","+","+"]})
-    ref.update({warnaKlik:["btn span1","btn span1","btn span1","btn span1","btn span1",
-                "btn span1","btn span1","btn span1","btn span1"]})
+    ref.update({posisiKlik:["+","+","+","+","+","+","+","+","+"]})
+    ref.update({warnaKlik:["btn span1","btn span1","btn span1","btn span1","btn span1","btn span1","btn span1","btn span1","btn span1"]})
     ref.update({hasWinner:[false, "+"]})
     ref.update({countPerClick : 0})
+  }
+
+  inputPositionOandX(OorX, indeks){
+    var tmpWarna = this.state.warnaKlik
+    var tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
+        if(i === indeks){
+          return OorX
+        } return posisi
+      }
+    )
+    if(OorX === "O"){
+      tmpWarna[indeks] = "btn span1 disable o btn-primary"
+    } else {
+      tmpWarna[indeks] = "btn span1 disable x btn-info"
+    }
+
+    if(this.cekkWinCondition(indeks, OorX) === true){
+      ref.update({hasWinner:[true, OorX]})
+      if(OorX === "O"){
+        ref.update({oWon:this.state.oWon+1})
+      } else if(OorX === "X"){
+        ref.update({xWon:this.state.xWon+1})
+      }
+      alert(`${OorX} Win`)
+    }
+    this.changeColorTableFirebase(tmpWarna)
+    this.changeOnFirebase(tmpPosisiKlik)
+    ref.update({countPerClick:this.state.countPerClick+1})
   }
 
   logOut() {
@@ -78,8 +104,6 @@ class Game extends Component {
   }
 
   klikGame(indeks){
-    var tmpWarna = this.state.warnaKlik
-    var tmpPosisiKlik
     if(this.state.hasWinner[0] === true){
       this.restartGame()
       alert(`${this.state.hasWinner[1]} Win, Start a new game`)
@@ -89,38 +113,11 @@ class Game extends Component {
     } else if(this.cekAlreadyClick(indeks) === true){
       alert("Already Selected")
     } else {
-      if(this.state.countPerClick%2 === 0){
-        // Giliran O
-        tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
-            if(i === indeks){
-              return "O"
-            } return posisi
-          }
-        )
-        tmpWarna[indeks] = "btn span1 disable o btn-primary"
-        if(this.cekkWinCondition(indeks, "O") === true){
-          ref.update({hasWinner:[true, "O"]})
-          ref.update({oWon:this.state.oWon+1})
-          alert("O Win")
-        }
-      } else {
-        // Giliran X
-        tmpPosisiKlik = this.state.posisiKlik.map((posisi, i) => {
-            if(i === indeks){
-              return "X"
-            } return posisi
-          }
-        )
-        tmpWarna[indeks] = "btn span1 disable x btn-info"
-        if(this.cekkWinCondition(indeks, "X") === true){
-          ref.update({hasWinner:[true, "X"]})
-          ref.update({xWon:this.state.xWon+1})
-          alert("X Win")
-        }
+      if(this.state.countPerClick%2 === 0){ // Giliran O
+        this.inputPositionOandX("O", indeks)
+      } else { // Giliran X
+        this.inputPositionOandX("X", indeks)
       }
-      this.changeColorTableFirebase(tmpWarna)
-      this.changeOnFirebase(tmpPosisiKlik)
-      ref.update({countPerClick:this.state.countPerClick+1})
     }
   }
 
