@@ -6,8 +6,7 @@ class Game extends Component {
   constructor() {
     super();
     this.state = {
-      terisi:false,
-      oWon:0,
+      oWon: 0,
       xWon : 0,
       hasWinner : [false, "+"],
       countPerClick : 0,
@@ -16,9 +15,14 @@ class Game extends Component {
     }
   }
 
+  //Set state from Firebase
   handleChange(data) {
+    this.setState({hasWinner:[data.hasWinner[0], data.hasWinner[1]]})
     this.setState({posisiKlik: data.posisiKlik});
     this.setState({warnaKlik: data.warnaKlik});
+    this.setState({countPerClick: data.countPerClick});
+    this.setState({oWon: data.oWon});
+    this.setState({xWon: data.xWon});
   }
 
   changeColorTableFirebase(warnaKlik){
@@ -62,8 +66,15 @@ class Game extends Component {
                 "+","+","+","+"]})
     ref.update({warnaKlik:["btn span1","btn span1","btn span1","btn span1","btn span1",
                 "btn span1","btn span1","btn span1","btn span1"]})
-    this.setState({hasWinner:[false, "+"]})
-    this.setState({countPerClick : 0})
+    ref.update({hasWinner:[false, "+"]})
+    ref.update({countPerClick : 0})
+  }
+
+  logOut() {
+    ref.update({oWon:0})
+    ref.update({xWon:0})
+    this.restartGame()
+    Fire.auth().signOut();
   }
 
   klikGame(indeks){
@@ -88,8 +99,8 @@ class Game extends Component {
         )
         tmpWarna[indeks] = "btn span1 disable o btn-primary"
         if(this.cekkWinCondition(indeks, "O") === true){
-          this.setState({hasWinner:[true, "O"]})
-          this.setState({oWon:this.state.oWon+1})
+          ref.update({hasWinner:[true, "O"]})
+          ref.update({oWon:this.state.oWon+1})
           alert("O Win")
         }
       } else {
@@ -102,27 +113,21 @@ class Game extends Component {
         )
         tmpWarna[indeks] = "btn span1 disable x btn-info"
         if(this.cekkWinCondition(indeks, "X") === true){
-          this.setState({hasWinner:[true, "X"]})
-          this.setState({xWon:this.state.xWon+1})
+          ref.update({hasWinner:[true, "X"]})
+          ref.update({xWon:this.state.xWon+1})
           alert("X Win")
         }
       }
-      this.setState({warnaKlik:tmpWarna})
       this.changeColorTableFirebase(tmpWarna)
-      this.setState({posisiKlik:tmpPosisiKlik})
       this.changeOnFirebase(tmpPosisiKlik)
-      this.setState({countPerClick:this.state.countPerClick+1})
+      ref.update({countPerClick:this.state.countPerClick+1})
     }
   }
 
   componentDidMount(){
     ref.on('value', snap => {
-      snap.val() ? this.handleChange(snap.val()) : console.log("belum ada")
+      snap.val() ? this.handleChange(snap.val()) : console.log("data belum masuk / belum sinkron / koneksi")
     })
-  }
-
-  logOut() {
-        Fire.auth().signOut();
   }
 
   render() {
@@ -151,7 +156,7 @@ class Game extends Component {
             </ul>
             <div className="clr">&nbsp;</div>
             <div className="row"><a id="reset" className="btn-success btn span3" onClick={() => this.restartGame()}>Restart</a></div> <br/>
-            <div className="row"><button className="btn-danger btn span3" onClick={this.logOut}>Log Out</button></div>
+            <div className="row"><button className="btn-danger btn span3" onClick={() => this.logOut()}>Log Out</button></div>
           </div>
         </div>
     );
